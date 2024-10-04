@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MR ISLAM WAGEH PLATFORM - إدخال بيانات الطالب</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            direction: rtl;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #4CAF50;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            transition: border 0.3s;
+        }
+        input:focus {
+            border-color: #4CAF50;
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .platform-name {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+        .menu {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .menu-list {
+            display: none;
+            position: absolute;
+            top: 40px;
+            left: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+        .menu-list a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+        }
+        .menu-list a:hover {
+            background-color: #f4f7f6;
+        }
+    </style>
+</head>
+<body>
+    <!-- قائمة النقاط الثلاث -->
+    <div class="menu" id="menuButton">☰</div>
+    <div class="menu-list" id="menuList">
+        <a href="table.html">الوصول إلى الجدول</a>
+    </div>
+
+    <div class="container">
+        <h1>إدخال بيانات الطالب</h1>
+        <div class="platform-name">MR ISLAM WAGEH PLATFORM</div>
+        <form id="studentForm">
+            <label for="studentName">اسم الطالب:</label>
+            <input type="text" id="studentName" placeholder="أدخل اسم الطالب" required>
+
+            <label for="studentPhone">رقم هاتف الطالب:</label>
+            <input type="text" id="studentPhone" placeholder="أدخل رقم هاتف الطالب" required>
+
+            <label for="guardianPhone">رقم هاتف ولي الأمر:</label>
+            <input type="text" id="guardianPhone" placeholder="أدخل رقم هاتف ولي الأمر" required>
+
+            <label for="gradeLevel">المرحلة الدراسية:</label>
+            <input type="text" id="gradeLevel" placeholder="أدخل المرحلة الدراسية" required>
+
+            <label for="group">المجموعة:</label>
+            <input type="text" id="group" placeholder="أدخل المجموعة" required>
+
+            <button type="submit">إدخال البيانات</button>
+        </form>
+    </div>
+
+    <script>
+        // عرض القائمة عند الضغط على النقاط الثلاث
+        document.getElementById('menuButton').addEventListener('click', function() {
+            const menuList = document.getElementById('menuList');
+            if (menuList.style.display === 'block') {
+                menuList.style.display = 'none';
+            } else {
+                menuList.style.display = 'block';
+            }
+        });
+
+        // إدخال البيانات وحفظها في Local Storage
+        document.getElementById('studentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const studentName = document.getElementById('studentName').value;
+            const studentPhone = document.getElementById('studentPhone').value;
+            const guardianPhone = document.getElementById('guardianPhone').value;
+            const gradeLevel = document.getElementById('gradeLevel').value;
+            const group = document.getElementById('group').value;
+
+            const studentData = {
+                name: studentName,
+                phone: studentPhone,
+                guardian: guardianPhone,
+                grade: gradeLevel,
+                group: group
+            };
+
+            let students = JSON.parse(localStorage.getItem('students')) || [];
+            students.push(studentData);
+            localStorage.setItem('students', JSON.stringify(students));
+
+            window.location.href = 'table.html';
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MR ISLAM WAGEH PLATFORM - جدول بيانات الطلاب</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            direction: rtl;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 15px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        td[contenteditable="true"] {
+            background-color: #e6f7ff;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 20px 0;
+        }
+        button:hover {
+            background-color: #e53935;
+        }
+        .platform-name {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>جدول بيانات الطلاب</h1>
+        <div class="platform-name">MR ISLAM WAGEH PLATFORM</div>
+        <table id="studentsTable">
+            <thead>
+                <tr>
+                    <th>اسم الطالب</th>
+                    <th>رقم هاتف الطالب</th>
+                    <th>رقم هاتف ولي الأمر</th>
+                    <th>المرحلة الدراسية</th>
+                    <th>المجموعة</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- سيتم إدراج البيانات هنا تلقائيًا -->
+            </tbody>
+        </table>
+
+        <!-- زر مسح البيانات -->
+        <button id="clearData">مسح البيانات</button>
+    </div>
+
+    <script>
+        // جلب البيانات من Local Storage
+        let students = JSON.parse(localStorage.getItem('students')) || [];
+
+        const tableBody = document.querySelector('#studentsTable tbody');
+
+        // عرض البيانات في الجدول
+        students.forEach((student, index) => {
+            const row = document.createElement('tr');
+
+            row.innerHTML = `
+                <td contenteditable="true" data-index="${index}" data-key="name">${student.name}</td>
+                <td contenteditable="true" data-index="${index}" data-key="phone">${student.phone}</td>
+                <td contenteditable="true" data-index="${index}" data-key="guardian">${student.guardian}</td>
+                <td contenteditable="true" data-index="${index}" data-key="grade">${student.grade}</td>
+                <td contenteditable="true" data-index="${index}" data-key="group">${student.group}</td>
+            `;
+
+            tableBody.appendChild(row);
+        });
+
+        // تحديث Local Storage عند تعديل البيانات
+        tableBody.addEventListener('input', function(e) {
+            const target = e.target;
+            const index = target.getAttribute('data-index');
+            const key = target.getAttribute('data-key');
+            students[index][key] = target.textContent;
+            localStorage.setItem('students', JSON.stringify(students));
+        });
+
+        // مسح البيانات
+        document.getElementById('clearData').addEventListener('click', function() {
+            if (confirm('هل أنت متأكد أنك تريد مسح جميع البيانات؟')) {
+                localStorage.removeItem('students');
+                location.reload();
+            }
+        });
+    </script>
+</body>
+</html>
